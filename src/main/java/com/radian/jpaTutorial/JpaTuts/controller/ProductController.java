@@ -2,6 +2,7 @@ package com.radian.jpaTutorial.JpaTuts.controller;
 
 import com.radian.jpaTutorial.JpaTuts.entity.Product;
 import com.radian.jpaTutorial.JpaTuts.repository.ProductRepo;
+import com.radian.jpaTutorial.JpaTuts.repository.ProjectionClass;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -100,6 +102,19 @@ public class ProductController {
         // - "Containing"  -> SQL LIKE %title%
         // - "IgnoreCase"  -> case-insensitive comparison
         return productRepo.findByTitleContainingIgnoreCase(title, pageable).getContent();
+    }
+
+    @GetMapping("/projection")
+    public List<ProjectionClass> getProductsByPriceGreaterThan(@RequestParam(defaultValue = "10.00") String price) {
+        // The request param arrives as text from the URL, so it is converted to BigDecimal
+        // before being passed to the repository query.
+        //
+        // This does not return full Product entities. It returns a projection, which means
+        // only the fields declared by ProjectionClass are fetched and exposed in the response.
+        //
+        // For each matching row, Spring Data creates a runtime proxy that implements
+        // ProjectionClass and maps query aliases like "title" and "sku" to getTitle()/getSku().
+        return productRepo.findByPriceGreaterThan(new BigDecimal(price));
     }
 
 
