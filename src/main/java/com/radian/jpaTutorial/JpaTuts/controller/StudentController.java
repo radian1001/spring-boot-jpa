@@ -43,13 +43,13 @@ public class StudentController {
    }
 
    @DeleteMapping("/students/{studentId}/subjects/{subjectId}")
-   public StudentDto removeStudentFromCourse(@PathVariable Long studentId, @PathVariable Long courseId) {
-       return studentService.removeStudentFromCourse(studentId, courseId);
+   public void removeStudentFromCourse(@PathVariable Long studentId, @PathVariable Long courseId) {
+       studentService.removeStudentFromCourse(studentId, courseId);
    }
 
    @DeleteMapping("/students/{studentId}/professors/{professorId}")
-   public StudentDto removeStudentFromProfessor(@PathVariable Long studentId, @PathVariable Long professorId) {
-       return studentService.removeStudentFromProfessor(studentId, professorId);
+   public void removeStudentFromProfessor(@PathVariable Long studentId, @PathVariable Long professorId) {
+       studentService.removeStudentFromProfessor(studentId, professorId);
    }
 
 
